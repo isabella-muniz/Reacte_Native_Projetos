@@ -1,4 +1,4 @@
-import mysql from "mysql2/promise";
+/* import mysql from "mysql2/promise";
 
 // Criando um pool de conexões com o banco de dados MySQL
 // As variáveis de ambiente (process.env) são definidas no arquivo .env na raiz do projeto
@@ -21,6 +21,32 @@ const pool = mysql.createPool({
 // Funcção para obter uma conexão do pool
 export async function getConnection() {
     return await pool.getConnection();
+}
+
+export default pool;
+ */
+
+
+import mysql from 'mysql2/promise';
+
+const pool = mysql.createPool({
+  host: process.env.DB_HOSTNAME,
+  port: 3306, // Porta de comunicação correta
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
+  waitForConnections: true,
+  connectionLimit: 10,
+  queueLimit: 0,
+  connectTimeout: 10000, // 10 segundos de timeout
+  /* ssl: {
+    ca: Buffer.from(process.env.DB_SSL_CA_BASE64, 'base64').toString('utf-8'), // Decodifica o certificado
+  }, */
+});
+
+// Função para obter uma conexão da pool
+export async function getConnection() {
+  return await pool.getConnection();
 }
 
 export default pool;
